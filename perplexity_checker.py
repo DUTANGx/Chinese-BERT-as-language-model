@@ -6,16 +6,13 @@ import torch
 from pytorch_transformers import BertTokenizer, BertModel, BertForMaskedLM
 import logging
 
-
-ROOT_DIR = os.path.dirname(__file__)
-MODEL_PATH = os.path.join(ROOT_DIR, 'baidubaike')
-DEVICE = 'cuda:1'
+DEVICE = 'cuda:0'
 
 logging.basicConfig(level=logging.INFO)
 
 
 class Perplexity_Checker(object):
-    def __init__(self):
+    def __init__(self, MODEL_PATH):
         self.tokenizer = BertTokenizer.from_pretrained(MODEL_PATH)
         self.model = BertForMaskedLM.from_pretrained(MODEL_PATH)
         self.model.eval()
@@ -75,8 +72,9 @@ class Perplexity_Checker(object):
 
 
 if __name__ == '__main__':
+    MODEL_PATH = 'baidubaike'
     text_formatter = lambda x: "[CLS]{} [SEP]".format(x)
-    pchecker = Perplexity_Checker()
+    pchecker = Perplexity_Checker(MODEL_PATH)
     ''' for TSV '''
     # AD = pd.read_csv('data/extracted_sentences/AD.tsv', header=None, sep='\t').values[0]
     # CT = pd.read_csv('data/extracted_sentences/CT.tsv', header=None, sep='\t').values[0]
